@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZAYBA — Windows için Grid Trading Terminali</title>
+<meta name="description" content="ZAYBA: Binance Spot için masaüstü grid bot terminali. API anahtarlarınız bilgisayarınızda kalır.">
+<meta name="color-scheme" content="dark">
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"InterVariable";font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/inter-latin-ext-wght-normal.woff2) format("woff2-variations");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"InterVariable";font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/inter-latin-wght-normal.woff2) format("woff2-variations");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{--bg:#07080b;--surface:#0e1016;--surface-2:#13161e;--inset:#0a0c11;--line:rgba(255,255,255,.07);--line-2:rgba(255,255,255,.12);--text:#eef0f5;--text-2:#b9bfcc;--muted:#7d8595;--accent:#d4af6a;--accent-2:#f1d9a4;--accent-ink:#1b1406;--accent-soft:rgba(212,175,106,.11);--accent-line:rgba(212,175,106,.38);--up:#2ebd85;--warn:#f0b429;--font:"InterVariable","Segoe UI Variable","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);color:var(--text);background:radial-gradient(1100px 560px at 75% -10%,rgba(212,175,106,.09),transparent 62%),radial-gradient(800px 500px at -10% 30%,rgba(90,169,255,.04),transparent 60%),var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;line-height:1.5}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+header{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.16em;font-size:17px;text-decoration:none}
+.brand svg{width:34px;height:34px;filter:drop-shadow(0 6px 16px rgba(212,175,106,.25))}
+.brand small{display:block;font-size:9px;letter-spacing:.24em;color:var(--muted);font-weight:600}
+header nav{display:flex;gap:22px;font-size:14px;color:var(--text-2)}
+header nav a{text-decoration:none}
+header nav a:hover{color:var(--text)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding:48px 0 18px;text-align:center}
+.eyebrow{color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin:0}
+h1{font-size:clamp(36px,6vw,60px);line-height:1.04;letter-spacing:-.035em;margin:12px auto 16px;max-width:880px;font-weight:750}
+h1 span{background:linear-gradient(180deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:18px;color:var(--text-2);max-width:680px;margin:0 auto}
+.cta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:240px;padding:15px 24px;border-radius:12px;border:0;cursor:pointer;font:inherit;font-size:15px;font-weight:700;text-decoration:none;color:var(--accent-ink);background:linear-gradient(180deg,var(--accent-2),var(--accent));box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 14px 34px -12px rgba(212,175,106,.55);transition:filter .15s,transform .1s}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(1px)}
+.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.btn.ghost{background:var(--surface);color:var(--text);border:1px solid var(--line-2);box-shadow:none;min-width:0}
+.release{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:14px;color:var(--muted);font-size:13px}
+.release b{color:var(--text);font-weight:650}
+.status{color:var(--muted);font-size:13px;margin:8px 0 0}
+.status.err{color:#ff98a6}
+.shot{position:relative;margin:34px auto 0;max-width:1080px;border-radius:18px;padding:8px;border:1px solid var(--line-2);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));box-shadow:0 40px 120px -30px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.4)}
+.shot::before{content:"";position:absolute;left:12%;right:12%;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.7}
+.shot img{display:block;width:100%;height:auto;border-radius:12px}
+.shot figcaption{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 2px}
+section{padding:64px 0 0}
+h2{font-size:30px;letter-spacing:-.025em;margin:8px 0 10px;font-weight:700}
+.section-lead{color:var(--text-2);max-width:640px;margin:0 0 26px}
+.features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.feature{padding:20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,var(--surface-2),var(--surface))}
+.feature .ico{width:22px;height:22px;color:var(--accent)}
+.feature b{display:block;margin:12px 0 6px;font-size:15px}
+.feature span{color:var(--text-2);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:s}
+.step{padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--inset)}
+.step b{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.step b::before{counter-increment:s;content:counter(s);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:var(--accent);color:var(--accent-ink)}
+.step span{color:var(--text-2);font-size:14px}
+.two{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:14px;align-items:start}
+.card{padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.card h3{margin:0 0 10px;font-size:16px}
+.notes{white-space:pre-wrap;color:var(--text-2);font-size:14px;max-height:260px;overflow:auto}
+.hash{word-break:break-all;font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--muted);margin-top:12px}
+.smart{border-left:3px solid var(--warn)}
+.smart ol{margin:8px 0 0;padding-left:20px;color:var(--text-2);font-size:14px}
+.smart li{margin:4px 0}
+.req{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.req span{font-size:12px;border:1px solid var(--line-2);border-radius:999px;padding:5px 11px;color:var(--text-2)}
+.risk{margin-top:14px;font-size:12.5px;color:var(--muted)}
+footer{margin:64px 0 0;padding:26px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media(max-width:860px){.features,.steps,.two{grid-template-columns:1fr}header nav{display:none}.btn{width:100%}}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0" aria-hidden="true">
+<defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d9a4"/><stop offset="1" stop-color="#d4af6a"/></linearGradient></defs>
+<symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="url(#lg)"/><path d="M9.5 9.5h13l-13 13h13" fill="none" stroke="#1b1406" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 16h5.2M19.8 16H25" fill="none" stroke="#1b1406" stroke-opacity=".42" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/><path d="m7 9 3-3 3 3 4-4"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-percent" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/></symbol>
+</svg>
+<div class="wrap">
+<header>
+<a class="brand" href="#"><svg aria-hidden="true"><use href="#logo"/></svg><div>ZAYBA<small>GRID TERMINAL</small></div></a>
+<nav><a href="#ozellikler">Özellikler</a><a href="#kurulum">Kurulum</a><a href="#indir">İndir</a></nav>
+</header>
+
+<main>
+<div class="hero" id="indir">
+<div>
+<p class="eyebrow">Windows · Binance Spot</p>
+<h1>Grid botlarınız için <span>profesyonel terminal</span></h1>
+<p class="lead">Binance Spot grid botlarınızı tek ekrandan kurun, izleyin ve yönetin. API anahtarlarınız bilgisayarınızdan çıkmaz.</p>
+<div class="cta"><a class="btn" id="downloadBtn" href="#" aria-disabled="true"><svg class="ico"><use href="#i-download"/></svg>ZAYBA'yı İndir</a></div>
+<div class="release"><span>Sürüm <b id="version">yükleniyor…</b></span><span>Yayın <b id="published">—</b></span><span>Windows 10 / 11 · 64 bit</span></div>
+<p class="status" id="status">Güncel sürüm kontrol ediliyor…</p>
+</div>
+<figure class="shot"><img src="zayba-dashboard.webp" width="1600" height="976" alt="ZAYBA Genel Bakış ekranı: bot plan değeri, 30 günlük K/Z grafiği, aktif botlar ve son işlemler"><figcaption>Temsili ekran görüntüsü — örnek verilerdir, gerçek getiri değildir.</figcaption></figure>
+</div>
+
+<section id="ozellikler">
+<p class="eyebrow">Özellikler</p>
+<h2>Gerçek emir, net kontrol</h2>
+<p class="section-lead">ZAYBA, Binance Spot hesabınızda gerçek LIMIT emirlerle çalışır ve her adımda neyin olduğunu gösterir.</p>
+<div class="features">
+<div class="feature"><svg class="ico"><use href="#i-grid"/></svg><b>Spot grid botları</b><span>Alt/üst fiyat, grid sayısı ve grid başı tutarı belirleyin; 3 adımlı sihirbaz emir planını önceden gösterir.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-percent"/></svg><b>Komisyon koruması</b><span>Hesabınıza özel alış/satış komisyonu düşüldükten sonra kârlı olmayan grid ayarları engellenir.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-shield"/></svg><b>Risk katmanı ve acil durdurma</b><span>Devre kesici, tek tıkla acil durdurma ve kapatırken açık emirlerin güvenli iptali.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-lock"/></svg><b>Anahtarlar sizde</b><span>Binance API anahtarları Windows'un şifreli kasasında, yalnız bu bilgisayarda saklanır. Para çekme izni gerekmez.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-chart"/></svg><b>Canlı grafik ve dolumlar</b><span>Grid seviyeleri, açık alış/satış emirleri ve gerçekleşen işlemler mum grafiğinde; dolumda sesli ve görsel bildirim.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-refresh"/></svg><b>Otomatik güncelleme</b><span>Yeni sürümler uygulama içinde bildirilir; kurulum dosyası SHA-256 ile doğrulanır.</span></div>
+</div>
+</section>
+
+<section id="kurulum">
+<p class="eyebrow">Kurulum</p>
+<h2>Üç adımda hazır</h2>
+<p class="section-lead">İlk kurulumdan sonra güncellemeler uygulamanın içinden gelir.</p>
+<div class="steps">
+<div class="step"><b>İndir ve kur</b><span>Yukarıdaki düğmeden kurulum dosyasını indirip çalıştırın.</span></div>
+<div class="step"><b>Hesabınla giriş yap</b><span>ZAYBA hesabı oluşturun veya giriş yapın; Binance API anahtarınızı bir kez bağlayın.</span></div>
+<div class="step"><b>Botunu kur</b><span>Parite, aralık ve grid ayarlarını seçin; özet ekranında kontrol edip başlatın.</span></div>
+</div>
+</section>
+
+<section>
+<div class="two">
+<div class="card"><h3>Bu sürümde neler var</h3><div class="notes" id="notes">Sürüm bilgisi yükleniyor…</div><p class="hash" id="hash"></p></div>
+<div class="card smart"><h3>Windows "bilgisayarınız korundu" uyarısı</h3>
+<span style="color:var(--text-2);font-size:14px">Yeni yayınlanan uygulamalarda Windows SmartScreen uyarı gösterebilir. Dosyayı yalnız bu sayfadan indirdiyseniz:</span>
+<ol><li><b>Ek bilgi</b> bağlantısına tıklayın.</li><li><b>Yine de çalıştır</b> düğmesine basın.</li></ol>
+<div class="req"><span>Windows 10 / 11</span><span>64 bit</span><span>İnternet bağlantısı</span><span>Binance Spot hesabı</span></div>
+</div>
+</div>
+<p class="risk">Kripto para işlemleri risklidir; ZAYBA gerçek emir gönderir ve kâr garantisi vermez. Bot ayarlarınızı ve bütçenizi kendi risk toleransınıza göre belirleyin.</p>
+</section>
+</main>
+
+<footer><span>© ZAYBA · Stable sürüm kanalı</span><span>Kurulum dosyasını yalnız bu resmi sayfadan indirin.</span></footer>
+</div>
+<script>
+const SUPABASE_URL='https://acbthkoylmlsdrvushye.supabase.co';
+const SUPABASE_KEY='sb_publishable_gXdY_35-imdGBSt7pK5s3Q_nDVGLBGn';
+function ver(v){const m=String(v||'').match(/(\d+)\.(\d+)\.(\d+)/);return m?m.slice(1).map(Number):[0,0,0]}
+function cmp(a,b){const x=ver(a.version),y=ver(b.version);for(let i=0;i<3;i++){if(x[i]!==y[i])return y[i]-x[i]}return String(b.published_at||'').localeCompare(String(a.published_at||''))}
+async function load(){
+  const q='/rest/v1/app_releases?select=version,download_url,sha256,notes,published_at&channel=eq.stable&active=eq.true&order=published_at.desc&limit=50';
+  const status=document.querySelector('#status');
+  try{
+    const r=await fetch(SUPABASE_URL+q,{headers:{apikey:SUPABASE_KEY,Accept:'application/json'}});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    if(!Array.isArray(rows)||!rows.length)throw new Error('Henüz stable sürüm yayınlanmadı.');
+    const rel=[...rows].sort(cmp)[0];
+    document.querySelector('#version').textContent='v'+rel.version;
+    document.querySelector('#published').textContent=rel.published_at?new Date(rel.published_at).toLocaleDateString('tr-TR'):'—';
+    document.querySelector('#notes').textContent=rel.notes||'Güncel ZAYBA kararlı sürümü.';
+    document.querySelector('#hash').textContent=rel.sha256?'SHA-256: '+rel.sha256:'';
+    // Yalnız resmi Supabase storage adresi kabul edilir; DB'ye yazılmış başka bir
+    // scheme/host (javascript:, http://, farklı domain) hiç bağlanmaz.
+    const ALLOWED_PREFIX=SUPABASE_URL+'/storage/v1/object/public/zayba-releases/';
+    const url=String(rel.download_url||'');
+    if(!url.startsWith(ALLOWED_PREFIX)||!/\.exe$/i.test(new URL(url).pathname))throw new Error('İndirme adresi doğrulanamadı; lütfen daha sonra tekrar deneyin.');
+    const b=document.querySelector('#downloadBtn'); b.href=url; b.setAttribute('download',''); b.removeAttribute('aria-disabled');
+    status.textContent='En güncel kararlı sürüm hazır.';
+  }catch(e){
+    document.querySelector('#version').textContent='—';
+    document.querySelector('#notes').textContent='İndirme bilgisi şu anda alınamadı.';
+    status.textContent='Hata: '+e.message;status.classList.add('err');
+  }
+}
+load();
+</script>
+</body>
+</html>
