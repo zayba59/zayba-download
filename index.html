@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ZAYBA — Windows için Grid Trading Terminali</title>
-<meta name="description" content="ZAYBA: Binance Spot için masaüstü grid bot terminali. API anahtarlarınız bilgisayarınızda kalır.">
+<meta name="description" content="ZAYBA, kullanıcı tarafından yapılandırılan Binance Spot emirlerini Windows masaüstü uygulamasından yöneten bir yazılımdır. Gerçek işlemler ve kayıp riski vardır.">
 <meta name="color-scheme" content="dark">
 <link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -86,7 +86,7 @@ footer{margin:64px 0 0;padding:26px 0 40px;border-top:1px solid var(--line);colo
 <div class="wrap">
 <header>
 <a class="brand" href="#"><svg aria-hidden="true"><use href="#logo"/></svg><div>ZAYBA<small>GRID TERMINAL</small></div></a>
-<nav><a href="#ozellikler">Özellikler</a><a href="#kurulum">Kurulum</a><a href="#indir">İndir</a></nav>
+<nav><a href="#ozellikler">Özellikler</a><a href="#kurulum">Kurulum</a><a href="#veri-ve-risk">Veri ve risk</a><a href="#indir">İndir</a></nav>
 </header>
 
 <main>
@@ -94,7 +94,7 @@ footer{margin:64px 0 0;padding:26px 0 40px;border-top:1px solid var(--line);colo
 <div>
 <p class="eyebrow">Windows · Binance Spot</p>
 <h1>Grid botlarınız için <span>profesyonel terminal</span></h1>
-<p class="lead">Binance Spot grid botlarınızı tek ekrandan kurun, izleyin ve yönetin. API anahtarlarınız bilgisayarınızdan çıkmaz.</p>
+<p class="lead">Binance Spot hesabınızda kendi belirlediğiniz grid emirlerini kurun ve izleyin. API anahtarı ve gizli anahtar Windows DPAPI ile bu bilgisayarda şifreli saklanır; uygulama bunları Binance bağlantısı için yerel olarak kullanır.</p>
 <div class="cta"><a class="btn" id="downloadBtn" href="#" aria-disabled="true"><svg class="ico"><use href="#i-download"/></svg>ZAYBA'yı İndir</a></div>
 <div class="release"><span>Sürüm <b id="version">yükleniyor…</b></span><span>Yayın <b id="published">—</b></span><span>Windows 10 / 11 · 64 bit</span></div>
 <p class="status" id="status">Güncel sürüm kontrol ediliyor…</p>
@@ -105,42 +105,52 @@ footer{margin:64px 0 0;padding:26px 0 40px;border-top:1px solid var(--line);colo
 <section id="ozellikler">
 <p class="eyebrow">Özellikler</p>
 <h2>Gerçek emir, net kontrol</h2>
-<p class="section-lead">ZAYBA, Binance Spot hesabınızda gerçek LIMIT emirlerle çalışır ve her adımda neyin olduğunu gösterir.</p>
+<p class="section-lead">ZAYBA, etkinleştirildiğinde kullanıcının Binance Spot hesabına API üzerinden gerçek limit emirleri gönderir. Varlıklar Binance hesabında kalır; ZAYBA kullanıcı fonlarını tutan bir hesap veya borsa değildir.</p>
 <div class="features">
 <div class="feature"><svg class="ico"><use href="#i-grid"/></svg><b>Spot grid botları</b><span>Alt/üst fiyat, grid sayısı ve grid başı tutarı belirleyin; 3 adımlı sihirbaz emir planını önceden gösterir.</span></div>
-<div class="feature"><svg class="ico"><use href="#i-percent"/></svg><b>Komisyon koruması</b><span>Hesabınıza özel alış/satış komisyonu düşüldükten sonra kârlı olmayan grid ayarları engellenir.</span></div>
-<div class="feature"><svg class="ico"><use href="#i-shield"/></svg><b>Risk katmanı ve acil durdurma</b><span>Devre kesici, tek tıkla acil durdurma ve kapatırken açık emirlerin güvenli iptali.</span></div>
-<div class="feature"><svg class="ico"><use href="#i-lock"/></svg><b>Anahtarlar sizde</b><span>Binance API anahtarları Windows'un şifreli kasasında, yalnız bu bilgisayarda saklanır. Para çekme izni gerekmez.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-percent"/></svg><b>Komisyon koruması</b><span>Uygulama, görünen hesap komisyonu ve ayar varsayımlarına göre grid planını kontrol eder. Emir gerçekleşmesi, komisyon ve net sonuç değişebilir; bu kontrol kârı garanti etmez.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-shield"/></svg><b>Risk katmanı ve acil durdurma</b><span>Devre kesici ve durdurma işlevi bulunur. Bağlantı veya borsa hatasında emir iptali tamamlanmayabilir; durdurma sonrası açık emirleri Binance hesabınızdan ayrıca kontrol edin.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-lock"/></svg><b>Anahtarlar sizde</b><span>Binance API anahtarı ve gizli anahtar Windows DPAPI ile bu bilgisayarda şifrelenmiş olarak saklanır. Uygulama bunları ZAYBA bulut hesabına göndermek için değil, Binance API bağlantısı için yerel olarak kullanır. API anahtarında para çekme izni açmayın; yalnız gerekli Spot okuma ve işlem izinlerini tanımlayın.</span></div>
 <div class="feature"><svg class="ico"><use href="#i-chart"/></svg><b>Canlı grafik ve dolumlar</b><span>Grid seviyeleri, açık alış/satış emirleri ve gerçekleşen işlemler mum grafiğinde; dolumda sesli ve görsel bildirim.</span></div>
-<div class="feature"><svg class="ico"><use href="#i-refresh"/></svg><b>Otomatik güncelleme</b><span>Yeni sürümler uygulama içinde bildirilir; kurulum dosyası SHA-256 ile doğrulanır.</span></div>
+<div class="feature"><svg class="ico"><use href="#i-refresh"/></svg><b>Otomatik güncelleme</b><span>Uygulama yeni sürüm bilgisini çevrimiçi kontrol eder. İndirme sayfasında SHA-256 değeri yayımlanmışsa dosyanın özetini çalıştırmadan önce karşılaştırın.</span></div>
 </div>
 </section>
 
 <section id="kurulum">
 <p class="eyebrow">Kurulum</p>
 <h2>Üç adımda hazır</h2>
-<p class="section-lead">İlk kurulumdan sonra güncellemeler uygulamanın içinden gelir.</p>
+<p class="section-lead">Kurulum ve lisans durumu için internet bağlantısı ve ZAYBA hesabı gerekir. Bot başlatma yetkisi, hesabınızdaki plan ve etkin cihaz durumuna bağlıdır.</p>
 <div class="steps">
 <div class="step"><b>İndir ve kur</b><span>Yukarıdaki düğmeden kurulum dosyasını indirip çalıştırın.</span></div>
-<div class="step"><b>Hesabınla giriş yap</b><span>ZAYBA hesabı oluşturun veya giriş yapın; Binance API anahtarınızı bir kez bağlayın.</span></div>
-<div class="step"><b>Botunu kur</b><span>Parite, aralık ve grid ayarlarını seçin; özet ekranında kontrol edip başlatın.</span></div>
+<div class="step"><b>ZAYBA hesabına giriş yap</b><span>E-posta ile hesap açın veya giriş yapın. Hesap, cihaz ve plan yetkisi Supabase altyapısında kontrol edilir.</span></div>
+<div class="step"><b>API anahtarını ve botu ayarla</b><span>Binance hesabında para çekme yetkisi kapalı bir API anahtarı oluşturun. Emirleri ve bütçeyi kontrol ettikten sonra botu kendiniz başlatın.</span></div>
 </div>
 </section>
 
 <section>
 <div class="two">
 <div class="card"><h3>Bu sürümde neler var</h3><div class="notes" id="notes">Sürüm bilgisi yükleniyor…</div><p class="hash" id="hash"></p></div>
-<div class="card smart"><h3>Windows "bilgisayarınız korundu" uyarısı</h3>
-<span style="color:var(--text-2);font-size:14px">Yeni yayınlanan uygulamalarda Windows SmartScreen uyarı gösterebilir. Dosyayı yalnız bu sayfadan indirdiyseniz:</span>
-<ol><li><b>Ek bilgi</b> bağlantısına tıklayın.</li><li><b>Yine de çalıştır</b> düğmesine basın.</li></ol>
+<div class="card smart"><h3>Windows güvenlik uyarısı</h3>
+<span style="color:var(--text-2);font-size:14px">SmartScreen uyarısı çıkarsa korumayı aşmayın. İndirme adresini ve yayımlanan SHA-256 değerini kontrol edin; yayıncı imzası doğrulanamıyorsa dosyayı çalıştırmayın ve destek e-postasına yazın.</span>
 <div class="req"><span>Windows 10 / 11</span><span>64 bit</span><span>İnternet bağlantısı</span><span>Binance Spot hesabı</span></div>
 </div>
 </div>
-<p class="risk">Kripto para işlemleri risklidir; ZAYBA gerçek emir gönderir ve kâr garantisi vermez. Bot ayarlarınızı ve bütçenizi kendi risk toleransınıza göre belirleyin.</p>
+<p class="risk">Kripto varlık işlemleri yüksek risk taşır; sermayenizin bir kısmını veya tamamını kaybedebilirsiniz. ZAYBA getiri vaat etmez. Bu yazılım kişiye özel yatırım tavsiyesi veya portföy yönetimi sunmaz. Başlatmadan önce emirleri, açık emirleri ve hesabınızdaki sonuçları kendiniz kontrol edin.</p>
+</section>
+
+<section id="veri-ve-risk">
+<p class="eyebrow">Şeffaflık</p>
+<h2>Hesap, veri ve işlem akışı</h2>
+<div class="card">
+<p>ZAYBA bir Windows masaüstü yazılımıdır. Botu başlattığınızda emirler sizin Binance hesabınızda ve sizin API anahtarınızla çalışır. ZAYBA kullanıcı varlıklarını saklamaz. Bu açıklama, hizmetin mevzuat kapsamını tek başına belirlemez.</p>
+<p>Binance API anahtarı ve gizli anahtar Windows DPAPI ile yerel uygulama verisinde şifrelenir. ZAYBA hesabı, e-posta, cihaz kimliği/adı ve plan-lisans bilgileri Supabase bulut altyapısında işlenir. Bot ayarları, yerel oturum ve işlem geçmişi bu bilgisayardaki uygulama veritabanında tutulur. Binance API anahtarınızı ZAYBA destek ekibine göndermeyin.</p>
+<p>Emirler ve iptal talepleri ağ, borsa veya cihaz sorunları nedeniyle başarısız olabilir. Durdurma düğmesinden sonra Binance hesabınızda açık emir kalmadığını ayrıca doğrulayın. Ekran görüntülerindeki örnek veriler gerçek getiri göstergesi değildir.</p>
+<p><a href="gizlilik.html">Gizlilik ve veri uygulamaları</a> · <a href="risk.html">Risk açıklaması</a> · <a href="kullanim-kosullari.html">Kullanım koşulları</a></p>
+</div>
 </section>
 </main>
 
-<footer><span>© ZAYBA · Stable sürüm kanalı</span><span>Kurulum dosyasını yalnız bu resmi sayfadan indirin.</span></footer>
+<footer><span>© ZAYBA · Stable sürüm kanalı</span><span><a href="gizlilik.html">Gizlilik</a> · <a href="risk.html">Risk</a> · <a href="kullanim-kosullari.html">Kullanım koşulları</a> · <a href="mailto:botzayba@gmail.com">İletişim</a></span></footer>
 </div>
 <script>
 const SUPABASE_URL='https://acbthkoylmlsdrvushye.supabase.co';
